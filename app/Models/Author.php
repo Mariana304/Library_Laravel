@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Author extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+     //relacion uno a muchos, "un autor puede tener muchos libros(hasMany)"
+     public function books(){
+        return $this->hasMany('App\Models\Book');
+    }
+    
 }
