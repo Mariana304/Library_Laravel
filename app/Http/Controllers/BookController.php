@@ -2,63 +2,94 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveBookRequest;
+use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
+
     {
-        return view('books.index');
+        $author = Author::all();
+
+        $book = Book::orderBy('id', 'desc')->paginate();
+        return view('books.index', compact('book', 'author'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
-        return view('books.create');
+        $author = Author::all();
+
+        return view('books.create', compact('author'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function store(SaveBookRequest $request)
     {
-        //
+
+
+        $book = new Book($request->validated());
+
+        $book->path_cover = $request->file('path_cover')->store('images', 'public');
+
+        $book->save();
+
+        return redirect()->route('books.show', $book->id);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+
+    public function show(Book $book)
     {
-        return view('books.show');
+        return view('books.show', compact('book'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+
+    public function edit(Book $book)
     {
-        return view('books.edit');
+        $author = Author::all();
+
+
+        return view('books.edit', compact('book', 'author'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    public function update(SaveBookRequest $request, Book $book)
     {
-        //
+
+        if ($request->hasFile('path_cover')) {
+
+            Storage::delete($book->path_cover);
+
+            $book = $book->fill( $request->validated() );
+
+            $book->path_cover = $request->file('path_cover')->store('images', 'public');
+
+            $book->save();
+            
+        } else {
+
+            $book->update(array_filter($request->validated()));
+        }
+
+
+
+
+
+        return redirect()->route('books.show', compact('book'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+
+    public function destroy(Book $book)
+
     {
-        //
+        Storage::delete($book->path_cover);
+
+        $book->delete();
+
+        return redirect()->route('books.index', compact('book'));
     }
 }

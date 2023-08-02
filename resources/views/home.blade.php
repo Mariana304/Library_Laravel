@@ -8,5 +8,7 @@
 </head>
 <body>
     <h2>Hola desde el home</h2>
+
+    <a href="{{ route('books.index') }}">Biblioteca</a>
 </body>
 </html>
