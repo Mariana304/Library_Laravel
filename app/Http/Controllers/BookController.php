@@ -32,6 +32,9 @@ class BookController extends Controller
     {
 
 
+       
+
+
         $book = new Book($request->validated());
 
         $book->path_cover = $request->file('path_cover')->store('images', 'public');

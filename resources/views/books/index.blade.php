@@ -3,47 +3,34 @@
 
 @section('title', 'libros')
 
-    <style>
-        .header{
-            background-image: url({{ asset('storage/images/bg-library.png') }})
-        }
-    </style>
+<style>
+    .header {
+        background-image: url({{ asset('storage/images/bg-library.avif') }});
+        filter: brightness(90%);
+    }
+</style>
 
 
 
 @section('contect')
 
-    <h1>Hola desde la vista index</h1>
 
 
 
 
 
+    <header class="header  bg-fixed h-72 sm:h-1/2 mb-24 ">
+
+        <p class=" sm:p-40 brightness-none text-white text-3xl sm:text-7xl italic font-bold text-center">Biblioteca</p>
+
+    </header>
 
 
     <div class="container mx-auto mt-5 text-center rounded-lg  ">
 
-        <header class="header bg-fixed h-72 sm:h-80  rounded-lg border ">
 
-          
-            <p class=" p-28 sm:p-40 text-white text-3xl sm:text-5xl italic font-bold text-center">Biblioteca</p>
 
-        </header>
-
-        <div class="grid justify-items-end py-2 mt-10  ">
-            <div class=" mb-4 rounded-lg bg-lime-600 h-10  text-xl text-white  ">
-
-                <a href="{{ route('books.create') }}">
-
-                    <p class=" flex flex-col italic  h-9 py-1 rounded-lg text-center mx-2 w-28 ">Nuevo libro</p>
-
-                </a>
-
-            </div>
-            
-        </div>
-
-        <div class=" border  grid lg:grid-cols-2  2xl:grid-cols-3  bg-slate-100  mt-4 sm:px-1 sm:py-1  rounded-lg ">
+        <div class=" grid lg:grid-cols-2  mb-16   2xl:grid-cols-3  bg-orange-50  mt-4 sm:px-1 sm:py-1  rounded-lg ">
 
 
 
@@ -58,38 +45,21 @@
 
                         <h5 class="mb-2 text-sm sm:text-lg font-medium text-neutral-800">
 
-                            <a href="{{ route('books.show', $book) }}"> * {{ $book->title }} </a>
+                            <a href="{{ route('books.show', $book) }}">{{ $book->title }} </a>
 
                         </h5>
 
-                        <p class="">
+
+                        <p class="mb-5">
 
                             {{ Str::limit($book->summary, 50) }}
-                        </p>
-
+                        </p>                       
                         <p>
-
-                            {{-- @foreach ($author as $author)
-                                @if ($book->author_id = $author->id)
-                                    {{ $author }}
-                                @else
-                                @endif
-                            @endforeach --}}
-
-
-
+                            {{ $book->author->name }}
                         </p>
                     </div>
-
-
                 </div>
             @endforeach
-
-
-
-
-
-
         </div>
 
     </div>

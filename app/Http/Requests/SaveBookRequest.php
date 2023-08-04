@@ -21,15 +21,33 @@ class SaveBookRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        if ($this->getMethod() == 'POST') {
 
-            'title' => 'required',
-            'summary'  => 'max:255',
-            'pages' => 'required', 
-            'author_id' => 'required',
-            'price' => 'required',
-            'path_cover' => [
-                $this->route('book')? '' : 'image'],
-        ];
+            return [
+
+                'title' => 'required',
+                'summary'  => 'required',
+                'pages' => 'required',
+                'author_id' => 'required',
+                'price' => 'required',
+                'format' => 'required',
+                'path_cover' => 'required|image',
+
+            ];
+        } else {
+            return [
+
+                'title' => 'required',
+                'summary'  => 'required',
+                'pages' => 'required',
+                'author_id' => 'required',
+                'price' => 'required',
+                'format' => 'required',
+                'path_cover' => [
+
+                    $this->route('book') ? '' : 'image'
+                ],
+            ];
+        }
     }
 }

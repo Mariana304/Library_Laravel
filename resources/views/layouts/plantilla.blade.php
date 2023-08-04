@@ -15,7 +15,7 @@
     </style>
   
 </head>
-<body class="bg-slate-100">
+<body class="bg-slate-50">
 
     @include('layouts.partials.header')
     @yield('contect')
